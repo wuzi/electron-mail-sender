@@ -6,13 +6,13 @@
           <img src="~@/assets/images/img-01.png" alt="IMG">
         </div>
 
-        <form class="contact100-form validate-form">
+        <form @submit.prevent="send" class="contact100-form validate-form">
           <span class="contact100-form-title">
             Enviar email
           </span>
 
           <div class="wrap-input100 validate-input">
-            <input class="input100" type="text" name="name" placeholder="Nome">
+            <input class="input100" type="text" name="name" placeholder="Nome" v-model="name" required>
             <span class="focus-input100"></span>
             <span class="symbol-input100">
               <i class="fa fa-user" aria-hidden="true"></i>
@@ -20,7 +20,7 @@
           </div>
 
           <div class="wrap-input100 validate-input">
-            <input class="input100" type="text" name="email" placeholder="Email">
+            <input class="input100" type="email" name="email" placeholder="Email" v-model="email" required>
             <span class="focus-input100"></span>
             <span class="symbol-input100">
               <i class="fa fa-envelope" aria-hidden="true"></i>
@@ -28,7 +28,7 @@
           </div>
 
           <div class="wrap-input100 validate-input">
-            <textarea class="input100" name="message" placeholder="Mensagem"></textarea>
+            <textarea class="input100" name="message" placeholder="Mensagem" v-model="message" required></textarea>
             <span class="focus-input100"></span>
           </div>
 
@@ -44,8 +44,31 @@
 </template>
 
 <script lang="ts">
+import swal from 'sweetalert'
 import { Options, Vue } from 'vue-class-component'
+const { ipcRenderer } = window.require('electron')
 
 @Options({})
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  name = '';
+  email = '';
+  message = '';
+
+  send () {
+    swal({
+      title: 'Enviado...',
+      text: 'Por favor, aguarde',
+      buttons: {
+        cancel: false,
+        confirm: false
+      },
+      closeOnClickOutside: false,
+      closeOnEsc: false
+    })
+
+    ipcRenderer.sendSync('sendEmail', { name: this.name, email: this.email, message: this.message })
+
+    swal('Sucesso!', 'O email foi enviado.', 'success')
+  }
+}
 </script>
