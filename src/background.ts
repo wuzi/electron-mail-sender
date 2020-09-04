@@ -150,7 +150,6 @@ if (isDevelopment) {
 ipcMain.on('sendEmail', (event, arg: SendMailDto) => {
   const { host, port, auth } = store.get('transport') as TransportSettings;
 
-  console.log(arg)
   if (!host || !port || !auth.user || !auth.pass) {
     event.returnValue = 'missing_transport'
     return
