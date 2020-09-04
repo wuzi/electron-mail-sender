@@ -154,7 +154,7 @@ if (isDevelopment) {
 }
 
 // Receive recipient data from the renderer
-ipcMain.on('sendEmail', (event, arg: SendMailDto) => {
+ipcMain.on('sendEmail', async (event, arg: SendMailDto) => {
   const { host, port, auth } = store.get('transport') as TransportSettings;
 
   if (!host || !port || !auth.user || !auth.pass) {
@@ -181,7 +181,7 @@ ipcMain.on('sendEmail', (event, arg: SendMailDto) => {
     html
   }
 
-  transporter.sendMail(options)
+  await transporter.sendMail(options)
   event.returnValue = 'success'
 })
 
