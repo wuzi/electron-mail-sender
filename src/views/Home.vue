@@ -28,6 +28,14 @@
           </div>
 
           <div class="wrap-input100 validate-input">
+            <input class="input100" type="text" name="subject" placeholder="Assunto" v-model="subject" required>
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </span>
+          </div>
+
+          <div class="wrap-input100 validate-input">
             <textarea class="input100" name="message" placeholder="Mensagem" v-model="message" required></textarea>
             <span class="focus-input100"></span>
           </div>
@@ -52,6 +60,7 @@ const { ipcRenderer } = window.require('electron')
 export default class Home extends Vue {
   name = '';
   email = '';
+  subject = '';
   message = '';
 
   send () {
@@ -66,7 +75,17 @@ export default class Home extends Vue {
       closeOnEsc: false
     })
 
-    ipcRenderer.sendSync('sendEmail', { name: this.name, email: this.email, message: this.message })
+    const response = ipcRenderer.sendSync('sendEmail', {
+      name: this.name,
+      email: this.email,
+      subject: this.subject,
+      message: this.message
+    })
+
+    if (response === 'missing_transport') {
+      swal('Ops!', 'As configurações de SMTP não foram inseridas.', 'error')
+      return
+    }
 
     swal('Sucesso!', 'O email foi enviado.', 'success')
   }

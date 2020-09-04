@@ -3,8 +3,30 @@
 import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import { createTransport } from 'nodemailer'
 import Store from 'electron-store'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+interface WindowBounds {
+  width: number;
+  height: number;
+}
+
+interface TransportSettings {
+  host: string | null;
+  port: number | null;
+  auth: {
+    user: string | null;
+    pass: string | null;
+  };
+}
+
+interface SendMailDto {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -18,6 +40,14 @@ const store = new Store({
     windowBounds: {
       width: 1000,
       height: 800
+    },
+    transport: {
+      host: null,
+      port: null,
+      auth: {
+        user: null,
+        pass: null
+      }
     }
   }
 })
@@ -28,7 +58,7 @@ protocol.registerSchemesAsPrivileged([
 ])
 
 function createWindow () {
-  let { width, height } = store.get('windowBounds') as { width: number; height: number; };
+  let { width, height } = store.get('windowBounds') as WindowBounds;
 
   // Create the browser window.
   win = new BrowserWindow({
@@ -116,6 +146,32 @@ if (isDevelopment) {
 }
 
 // Receive recipient data from the renderer
-ipcMain.on('sendEmail', (event, arg) => {
+ipcMain.on('sendEmail', (event, arg: SendMailDto) => {
+  const { host, port, auth } = store.get('transport') as TransportSettings;
+
+  console.log(arg)
+  if (!host || !port || !auth.user || !auth.pass) {
+    event.returnValue = 'missing_transport'
+    return
+  }
+
+  const transporter = createTransport({
+    host,
+    port,
+    secure: false,
+    auth: {
+      user: auth.user,
+      pass: auth.pass
+    }
+  })
+
+  const options = {
+    from: auth.user,
+    to: arg.email,
+    subject: arg.subject,
+    message: arg.message
+  }
+
+  transporter.sendMail(options)
   event.returnValue = 'success'
 })
