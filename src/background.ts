@@ -175,3 +175,14 @@ ipcMain.on('sendEmail', (event, arg: SendMailDto) => {
   transporter.sendMail(options)
   event.returnValue = 'success'
 })
+
+// Receive SMTP config
+ipcMain.on('saveSMTP', (event, arg: TransportSettings) => {
+  store.set('transport', arg);
+  event.returnValue = 'success'
+})
+
+// Send SMTP config
+ipcMain.on('getSMTP', (event) => {
+  event.returnValue = store.get('transport')
+})

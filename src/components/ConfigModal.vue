@@ -2,7 +2,7 @@
   <div class="config-modal" v-show="visible">
     <div class="config-modal-content">
       <span class="close" @click="close">&times;</span>
-      <form @submit.prevent="send" class="validate-form">
+      <form @submit.prevent="save" class="validate-form">
         <span class="contact100-form-title">Configurações SMTP</span>
 
         <div class="wrap-input100 validate-input">
@@ -56,7 +56,7 @@
             type="password"
             name="password"
             placeholder="Senha"
-            v-model="password"
+            v-model="pass"
             required
           />
           <span class="focus-input100"></span>
@@ -74,7 +74,10 @@
 </template>
 
 <script lang="ts">
+import swal from 'sweetalert'
 import { Options, Vue } from 'vue-class-component'
+const { ipcRenderer } = window.require('electron')
+
 @Options({
   props: {
     visible: Boolean
@@ -82,10 +85,41 @@ import { Options, Vue } from 'vue-class-component'
   emits: ['close']
 })
 export default class ConfigModal extends Vue {
+  host = '';
+  port = '';
+  user = '';
+  pass = '';
   visible!: boolean;
 
   close () {
     this.$emit('close')
+  }
+
+  save () {
+    const port = parseInt(this.port)
+    if (Number.isNaN(port)) {
+      swal('Ops!', 'Porta inválida.', 'error')
+      return
+    }
+
+    ipcRenderer.sendSync('saveSMTP', {
+      host: this.host,
+      port,
+      auth: {
+        user: this.user,
+        pass: this.pass
+      }
+    })
+
+    this.close()
+  }
+
+  mounted () {
+    const transportSettings = ipcRenderer.sendSync('getSMTP')
+    this.host = transportSettings.host
+    this.port = transportSettings.port
+    this.user = transportSettings.auth.user
+    this.pass = transportSettings.auth.pass
   }
 }
 </script>
