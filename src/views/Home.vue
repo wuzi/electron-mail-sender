@@ -45,23 +45,36 @@
               Enviar
             </button>
           </div>
+
+          <div class="container-contact100-form-btn">
+            <button class="contact100-form-btn" type="button" @click="showConfig = true">
+              Configurar SMTP
+            </button>
+          </div>
         </form>
       </div>
     </div>
+    <ConfigModal :visible="showConfig" @close="showConfig = false" />
   </div>
 </template>
 
 <script lang="ts">
 import swal from 'sweetalert'
 import { Options, Vue } from 'vue-class-component'
+import ConfigModal from '@/components/ConfigModal.vue'
 const { ipcRenderer } = window.require('electron')
 
-@Options({})
+@Options({
+  components: {
+    ConfigModal
+  }
+})
 export default class Home extends Vue {
   name = '';
   email = '';
   subject = '';
   message = '';
+  showConfig = false
 
   send () {
     swal({
