@@ -97,10 +97,11 @@ export default class Home extends Vue {
 
     if (response === 'missing_transport') {
       swal('Ops!', 'As configurações de SMTP não foram inseridas.', 'error')
-      return
+    } else if (response === 'success') {
+      swal('Sucesso!', 'O email foi enviado.', 'success')
+    } else {
+      swal('Ops!', 'Não foi possível enviar o email.', 'error')
     }
-
-    swal('Sucesso!', 'O email foi enviado.', 'success')
   }
 }
 </script>
