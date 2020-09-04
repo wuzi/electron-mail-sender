@@ -3,11 +3,24 @@
 import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import Store from 'electron-store'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: BrowserWindow | null
+
+// Create a store instance
+const store = new Store({
+  // We'll call our data file 'user-preferences'
+  name: 'user-preferences',
+  defaults: {
+    windowBounds: {
+      width: 1000,
+      height: 800
+    }
+  }
+})
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -15,10 +28,12 @@ protocol.registerSchemesAsPrivileged([
 ])
 
 function createWindow () {
+  let { width, height } = store.get('windowBounds') as { width: number; height: number; };
+
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1000,
-    height: 800,
+    width,
+    height,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -35,6 +50,18 @@ function createWindow () {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
+
+  // The resize event is emitted when the window size changes.
+  win.on('resize', () => {
+    if (!win) return
+
+    // The event doesn't pass us the window size, so we call the `getBounds` method which returns an object with
+    // the height, width, and x and y coordinates.
+    let { width, height } = win.getBounds();
+
+    // Now that we have them, save them using the `set` method.
+    store.set('windowBounds', { width, height });
+  });
 
   win.on('closed', () => {
     win = null
