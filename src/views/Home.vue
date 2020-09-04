@@ -28,7 +28,7 @@
           </div>
 
           <div class="wrap-input100 validate-input">
-            <textarea class="input100" name="message" placeholder="Message"></textarea>
+            <textarea class="input100" name="message" placeholder="Mensagem"></textarea>
             <span class="focus-input100"></span>
           </div>
 
