@@ -3,7 +3,7 @@
     <div class="config-modal-content">
       <span class="close" @click="close">&times;</span>
       <form @submit.prevent="save" class="validate-form">
-        <span class="contact100-form-title">Configurações SMTP</span>
+        <span class="contact100-form-title">SMTP Config</span>
 
         <div class="wrap-input100 validate-input">
           <input
@@ -25,7 +25,7 @@
             class="input100"
             type="text"
             name="port"
-            placeholder="Porta"
+            placeholder="Port"
             v-model="port"
             required
           />
@@ -40,7 +40,7 @@
             class="input100"
             type="text"
             name="user"
-            placeholder="Usuário"
+            placeholder="User"
             v-model="user"
             required
           />
@@ -55,7 +55,7 @@
             class="input100"
             type="password"
             name="password"
-            placeholder="Senha"
+            placeholder="Password"
             v-model="pass"
             required
           />
@@ -66,7 +66,7 @@
         </div>
 
         <div class="container-contact100-form-btn">
-          <button class="contact100-form-btn">Salvar</button>
+          <button class="contact100-form-btn">Save</button>
         </div>
       </form>
     </div>
@@ -98,7 +98,7 @@ export default class ConfigModal extends Vue {
   save () {
     const port = parseInt(this.port)
     if (Number.isNaN(port)) {
-      swal('Ops!', 'Porta inválida.', 'error')
+      swal('Oops!', 'Invalid port.', 'error')
       return
     }
 

@@ -8,11 +8,11 @@
 
         <form @submit.prevent="send" class="contact100-form validate-form">
           <span class="contact100-form-title">
-            Enviar email
+            Send email
           </span>
 
           <div class="wrap-input100 validate-input">
-            <input class="input100" type="text" name="name" placeholder="Nome" v-model="name" required>
+            <input class="input100" type="text" name="name" placeholder="Name" v-model="name" required>
             <span class="focus-input100"></span>
             <span class="symbol-input100">
               <i class="fa fa-user" aria-hidden="true"></i>
@@ -28,7 +28,7 @@
           </div>
 
           <div class="wrap-input100 validate-input">
-            <input class="input100" type="text" name="subject" placeholder="Assunto" v-model="subject" required>
+            <input class="input100" type="text" name="subject" placeholder="Subject" v-model="subject" required>
             <span class="focus-input100"></span>
             <span class="symbol-input100">
               <i class="fa fa-pencil" aria-hidden="true"></i>
@@ -36,19 +36,19 @@
           </div>
 
           <div class="wrap-input100 validate-input">
-            <textarea class="input100" name="message" placeholder="Mensagem" v-model="message" required></textarea>
+            <textarea class="input100" name="message" placeholder="Message" v-model="message" required></textarea>
             <span class="focus-input100"></span>
           </div>
 
           <div class="container-contact100-form-btn">
             <button class="contact100-form-btn">
-              Enviar
+              Send
             </button>
           </div>
 
           <div class="container-contact100-form-btn">
             <button class="contact100-form-btn" type="button" @click="showConfig = true">
-              Configurar SMTP
+              Config SMTP
             </button>
           </div>
         </form>
@@ -78,8 +78,8 @@ export default class Home extends Vue {
 
   send () {
     swal({
-      title: 'Enviado...',
-      text: 'Por favor, aguarde',
+      title: 'Sending...',
+      text: 'Please wait',
       buttons: {
         cancel: false,
         confirm: false
@@ -96,11 +96,11 @@ export default class Home extends Vue {
     })
 
     if (response === 'missing_transport') {
-      swal('Ops!', 'As configurações de SMTP não foram inseridas.', 'error')
+      swal('Oops!', 'The SMTP configs were not inserted.', 'error')
     } else if (response === 'success') {
-      swal('Sucesso!', 'O email foi enviado.', 'success')
+      swal('Success!', 'Email sent.', 'success')
     } else {
-      swal('Ops!', 'Não foi possível enviar o email.', 'error')
+      swal('Oops!', 'It was not possible to send the email.', 'error')
     }
   }
 }
