@@ -2,8 +2,7 @@
   "name": "mail-sender",
   "description": "A app to send emails",
   "author": "Lucas Godoy",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
