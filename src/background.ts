@@ -1,10 +1,17 @@
 'use strict'
 
+import fs from 'fs'
+import path from 'path'
+import ejs from 'ejs'
+
 import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+
 import { createTransport } from 'nodemailer'
 import Store from 'electron-store'
+
+declare const __static: string;
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 interface WindowBounds {
@@ -165,11 +172,13 @@ ipcMain.on('sendEmail', (event, arg: SendMailDto) => {
     }
   })
 
+  const html = ejs.render(fs.readFileSync(path.join(__static, 'template.ejs'), 'utf-8'), arg)
+
   const options = {
     from: auth.user,
     to: arg.email,
     subject: arg.subject,
-    message: arg.message
+    html
   }
 
   transporter.sendMail(options)
