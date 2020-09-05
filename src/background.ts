@@ -19,6 +19,11 @@ interface WindowBounds {
   height: number;
 }
 
+interface WindowPosition {
+  x: number | undefined;
+  y: number | undefined;
+}
+
 interface TransportSettings {
   host: string | null;
   port: number | null;
@@ -48,6 +53,10 @@ const store = new Store({
       width: 800,
       height: 625
     },
+    windowPosition: {
+      x: undefined,
+      y: undefined
+    },
     transport: {
       host: null,
       port: null,
@@ -65,10 +74,13 @@ protocol.registerSchemesAsPrivileged([
 ])
 
 function createWindow () {
+  let { x, y } = store.get('windowPosition') as WindowPosition;
   let { width, height } = store.get('windowBounds') as WindowBounds;
 
   // Create the browser window.
   win = new BrowserWindow({
+    x,
+    y,
     width,
     height,
     minWidth: 400,
@@ -102,6 +114,14 @@ function createWindow () {
 
     // Now that we have them, save them using the `set` method.
     store.set('windowBounds', { width, height });
+  });
+
+  win.on('move', () => {
+    if (!win) return
+
+    const [x, y] = win.getPosition()
+
+    store.set('windowPosition', { x, y })
   });
 
   win.on('closed', () => {
