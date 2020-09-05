@@ -45,8 +45,8 @@ const store = new Store({
   name: 'user-preferences',
   defaults: {
     windowBounds: {
-      width: 1000,
-      height: 800
+      width: 800,
+      height: 625
     },
     transport: {
       host: null,
