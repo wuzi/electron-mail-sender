@@ -182,7 +182,12 @@ ipcMain.on('sendEmail', async (event, arg: SendMailDto) => {
     html
   }
 
-  await transporter.sendMail(options)
+  try {
+    await transporter.sendMail(options)
+  } catch (err) {
+    event.returnValue = 'fail'
+    return
+  }
   event.returnValue = 'success'
 })
 
