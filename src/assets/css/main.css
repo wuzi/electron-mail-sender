@@ -174,7 +174,7 @@ iframe {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 110px 130px 157px 148px;
+  padding: 15px 130px 15px 148px;
 }
 
 /*------------------------------------------------------------------
@@ -360,7 +360,7 @@ textarea.input100 {
 
 @media (max-width: 992px) {
   .wrap-contact100 {
-    padding: 110px 80px 157px 90px;
+    padding: 15px 80px 15px 90px;
   }
 
   .contact100-pic {
@@ -374,7 +374,7 @@ textarea.input100 {
 
 @media (max-width: 768px) {
   .wrap-contact100 {
-    padding: 110px 80px 157px 80px;
+    padding: 15px 80px 15px 80px;
   }
 
   .contact100-pic {
@@ -388,7 +388,7 @@ textarea.input100 {
 
 @media (max-width: 576px) {
   .wrap-contact100 {
-    padding: 110px 15px 157px 15px;
+    padding: 15px 15px 15px 15px;
   }
 }
 
