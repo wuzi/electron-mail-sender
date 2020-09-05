@@ -76,8 +76,8 @@ export default class Home extends Vue {
   message = '';
   showConfig = false
 
-  send () {
-    swal({
+  async send () {
+    await swal({
       title: 'Sending...',
       text: 'Please wait',
       buttons: {
