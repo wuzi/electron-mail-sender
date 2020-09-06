@@ -3,7 +3,7 @@
     <div class="container-contact100">
       <div class="wrap-contact100">
         <div class="contact100-pic">
-          <img src="~@/assets/images/img-01.png" alt="IMG">
+          <img src="~@/assets/images/img-01.png" alt="IMG" draggable="false">
         </div>
 
         <form @submit.prevent="send" class="contact100-form validate-form">

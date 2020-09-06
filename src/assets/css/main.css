@@ -139,7 +139,8 @@ iframe {
 [ Contact ]*/
 
 .bg-contact100 {
-  width: 100%;  
+  width: 100%;
+  user-select: none;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
